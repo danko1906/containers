@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Container Selection</title>
+    <link rel="stylesheet" href="styles/download.css">
+</head>
+<body>
+
+<h1>Container Selection</h1>
+
+<select id="containerSelect">
+    <option value="default" disabled selected>Select a container</option>
+</select>
+
+<table id="containerTable" style="display:none">
+    <thead>
+        <tr>
+            <th>Article</th>
+            <th>Total</th>
+        </tr>
+    </thead>
+    <tbody id="tableBody"></tbody>
+</table>
+
+<button id="downloadButton">Download</button>
+
+<script src="scripts/download.js"></script>
+
+</body>
+</html>
