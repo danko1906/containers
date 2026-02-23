@@ -1,5 +1,5 @@
 const container_statuses = ["packed"];
-const BASE_URL = window.APP_CONFIG?.BASE_URL || "http://127.0.0.1:5001";
+const BASE_URL = window.APP_CONFIG?.BASE_URL || "http://127.0.0.1:5003";
 const LANG = (localStorage.getItem("lang") || "en").toLowerCase() === "ru" ? "ru" : "en";
 
 const I18N = {
@@ -496,7 +496,6 @@ document.addEventListener("DOMContentLoaded", function () {
                     "Content-Type": "application/json",
                     Authorization: `Bearer ${accessToken}`
                 },
-                credentials: "include",
                 body: JSON.stringify(requestBody)
             });
 

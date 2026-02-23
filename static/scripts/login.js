@@ -1,4 +1,4 @@
-const BASE_URL = window.APP_CONFIG?.BASE_URL || "http://127.0.0.1:5001";
+const BASE_URL = window.APP_CONFIG?.BASE_URL || "http://127.0.0.1:5003";
 
 // Utility function to get the current access token
 function getAccessToken() {

@@ -1,4 +1,4 @@
-const BASE_URL = window.APP_CONFIG?.BASE_URL || "http://127.0.0.1:5001";
+const BASE_URL = window.APP_CONFIG?.BASE_URL || "http://127.0.0.1:5003";
 
 const TRANSLATIONS = {
     en: {
@@ -743,7 +743,6 @@ document.addEventListener("DOMContentLoaded", () => {
                     "Content-Type": "application/json",
                     Authorization: `Bearer ${accessToken}`
                 },
-                credentials: "include",
                 body: JSON.stringify(body)
             });
 

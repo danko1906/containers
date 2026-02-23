@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const BASE_URL = window.APP_CONFIG?.BASE_URL || "http://127.0.0.1:5001";
+    const BASE_URL = window.APP_CONFIG?.BASE_URL || "http://127.0.0.1:5003";
     const containerId = new URLSearchParams(window.location.search).get('container_id');
     const elements = {
         appContainer: document.getElementById('app'),
