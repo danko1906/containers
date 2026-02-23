@@ -7,14 +7,17 @@
     <link rel="stylesheet" href="styles/kit.css">
 </head>
 <body>
+    <div class="top-controls">
+        <button id="backToContainersButton" class="top-btn" type="button" data-i18n="backToContainersButton">Back to Containers</button>
+    </div>
 	<label class="switch">
 		<input type="checkbox" id="modeSwitch">
 		<span class="slider round"></span>
 	</label>
-	<span id="modeText">ADD Mode</span>
+	<span id="modeText" data-i18n="modeAdd">ADD Mode</span>
     <div class="input-container">
-    <input type="text" id="dmInput" placeholder="Enter DM code (85 characters)" />
-    <button id="clearButton">Clear</button> <!-- Кнопка очистки -->
+    <input type="text" id="dmInput" placeholder="Enter DM code (85 characters)" data-i18n-placeholder="dmInputPlaceholder" />
+    <button id="clearButton" data-i18n="clearButton">Clear</button> <!-- Кнопка очистки -->
 	</div>
 	 <!-- Кнопка для переключения режима -->
     <div id="app"></div> <!-- Контейнер для отображения информации о контейнере -->
@@ -32,9 +35,9 @@
 	<!-- Confirmation Modal -->
 	<div id="confirmationModal" class="modal">
 		<div class="modal-content">
-			<h2 id="modalText">Are you sure?</h2>
-			<button id="confirmButton">Yes</button>
-			<button id="cancelButton">Cancel</button>
+			<h2 id="modalText" data-i18n="modalDefaultText">Are you sure?</h2>
+			<button id="confirmButton" data-i18n="confirmButton">Yes</button>
+			<button id="cancelButton" data-i18n="cancelButton">Cancel</button>
 		</div>
 	</div>
 

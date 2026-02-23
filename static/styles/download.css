@@ -3,6 +3,26 @@ body {
     padding: 20px;
 }
 
+.top-controls {
+    display: flex;
+    justify-content: flex-start;
+    margin-bottom: 12px;
+}
+
+.top-btn {
+    padding: 10px 14px;
+    background-color: #2196f3;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.top-btn:hover {
+    background-color: #1976d2;
+}
+
 h1 {
     font-size: 24px;
     font-weight: bold;

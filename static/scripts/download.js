@@ -1,21 +1,90 @@
 const container_statuses = ["packed"];
 const BASE_URL = window.APP_CONFIG?.BASE_URL || "http://127.0.0.1:5001";
+const LANG = (localStorage.getItem("lang") || "en").toLowerCase() === "ru" ? "ru" : "en";
+
+const I18N = {
+    en: {
+        pageTitle: "Container Selection",
+        backToContainersButton: "Back to Containers",
+        multiModeLabel: "Select multiple containers",
+        selectContainerOption: "Select a container",
+        tableArticle: "Article",
+        tableTotal: "Total",
+        packedDateFromLabel: "Packed date from",
+        packedDateToLabel: "to",
+        applyFilterButton: "Apply filter",
+        resetButton: "Reset",
+        selectAllLabel: "Select all",
+        selectedCountLabel: "Selected: {count}",
+        downloadButtonSingle: "Download Selected Container",
+        downloadButtonMulti: "Download Selected Containers",
+        containerWord: "Container",
+        metaContainerId: "container_id",
+        metaPackedDate: "packed_date",
+        metaCreatedById: "created_by_id",
+        na: "N/A",
+        packedDateInvalid: "Packed date 'from' cannot be later than packed date 'to'.",
+        noPackedContainersFound: "No packed containers found.",
+        failedDownloadContainer: "Failed to download container: {message}",
+        failedDownloadContainers: "Failed to download containers list: {message}",
+        selectAtLeastOneContainer: "Select at least one container for bulk download.",
+        selectContainerFirst: "Select a container first.",
+        noRefreshToken: "No refresh token available",
+        failedRefreshToken: "Failed to refresh the access token",
+        errorRefreshToken: "Error refreshing access token"
+    },
+    ru: {
+        pageTitle: "Выбор контейнера",
+        backToContainersButton: "Назад к контейнерам",
+        multiModeLabel: "Выбрать несколько контейнеров",
+        selectContainerOption: "Выберите контейнер",
+        tableArticle: "Артикул",
+        tableTotal: "Количество",
+        packedDateFromLabel: "Дата упаковки от",
+        packedDateToLabel: "до",
+        applyFilterButton: "Применить фильтр",
+        resetButton: "Сбросить",
+        selectAllLabel: "Выбрать все",
+        selectedCountLabel: "Выбрано: {count}",
+        downloadButtonSingle: "Скачать выбранный контейнер",
+        downloadButtonMulti: "Скачать выбранные контейнеры",
+        containerWord: "Контейнер",
+        metaContainerId: "container_id",
+        metaPackedDate: "packed_date",
+        metaCreatedById: "created_by_id",
+        na: "Н/Д",
+        packedDateInvalid: "Дата «от» не может быть позже даты «до».",
+        noPackedContainersFound: "Упакованные контейнеры не найдены.",
+        failedDownloadContainer: "Не удалось скачать контейнер: {message}",
+        failedDownloadContainers: "Не удалось скачать список контейнеров: {message}",
+        selectAtLeastOneContainer: "Выберите хотя бы один контейнер для массовой выгрузки.",
+        selectContainerFirst: "Сначала выберите контейнер.",
+        noRefreshToken: "Токен обновления отсутствует",
+        failedRefreshToken: "Не удалось обновить access token",
+        errorRefreshToken: "Ошибка обновления access token"
+    }
+};
+
+function t(key, vars = {}) {
+    const template = I18N[LANG]?.[key] || I18N.en[key] || key;
+    return template.replace(/\{(\w+)\}/g, (_, name) => String(vars[name] ?? ""));
+}
 
 function formatPackedDate(packedDate) {
-    return packedDate || "N/A";
+    return packedDate || t("na");
 }
 
 function buildContainerMeta(container) {
-    return `container_id: ${container.container_id ?? "N/A"} | packed_date: ${formatPackedDate(container.packed_date)} | created_by_id: ${container.created_by_id ?? "N/A"}`;
+    return `${t("metaContainerId")}: ${container.container_id ?? t("na")} | ${t("metaPackedDate")}: ${formatPackedDate(container.packed_date)} | ${t("metaCreatedById")}: ${container.created_by_id ?? t("na")}`;
 }
 
 function createContainerOption(container) {
     const option = document.createElement("option");
     option.value = String(container.container_id);
-    const containerName = container.container_name || `Container ${container.container_id}`;
+    const containerName = container.container_name || `${t("containerWord")} ${container.container_id}`;
     const containerMeta = buildContainerMeta(container);
     option.textContent = `${containerName} \u2003\u2003 | ${containerMeta}`;
-    option.dataset.containerName = container.container_name || `Container ${container.container_id}`;
+    option.dataset.containerName = containerName;
     option.dataset.containerMeta = containerMeta;
     option.dataset.containerId = container.container_id ?? "";
     option.dataset.packedDate = container.packed_date ?? "";
@@ -29,6 +98,7 @@ function getContainerIdFromURL() {
 }
 
 document.addEventListener("DOMContentLoaded", function () {
+    const backToContainersButton = document.getElementById("backToContainersButton");
     const multiModeCheckbox = document.getElementById("multiModeCheckbox");
     const singleModeSection = document.getElementById("singleModeSection");
     const multiModeSection = document.getElementById("multiModeSection");
@@ -50,14 +120,91 @@ document.addEventListener("DOMContentLoaded", function () {
     let isMultiMode = false;
     const selectedContainerIds = new Set();
 
+    function applyStaticTranslations() {
+        document.documentElement.lang = LANG;
+        document.title = t("pageTitle");
+
+        document.querySelectorAll("[data-i18n]").forEach((element) => {
+            const key = element.getAttribute("data-i18n");
+            if (key) {
+                if (key === "selectedCountLabel") {
+                    element.textContent = t(key, { count: selectedContainerIds.size });
+                } else {
+                    element.textContent = t(key);
+                }
+            }
+        });
+
+        // Fallbacks for older cached markup without data-i18n attributes.
+        const heading = document.querySelector("h1");
+        if (heading) {
+            heading.textContent = t("pageTitle");
+        }
+
+        if (backToContainersButton) {
+            backToContainersButton.textContent = t("backToContainersButton");
+        }
+
+        const multiModeLabel = document.getElementById("multiModeLabel");
+        if (multiModeLabel) {
+            multiModeLabel.textContent = t("multiModeLabel");
+        }
+
+        const tableHeaders = document.querySelectorAll("#containerTable thead th");
+        if (tableHeaders.length >= 2) {
+            tableHeaders[0].textContent = t("tableArticle");
+            tableHeaders[1].textContent = t("tableTotal");
+        }
+
+        const packedDateFromLabel = document.querySelector('label[for="packedDateFrom"]');
+        if (packedDateFromLabel) {
+            packedDateFromLabel.textContent = t("packedDateFromLabel");
+        }
+
+        const packedDateToLabel = document.querySelector('label[for="packedDateTo"]');
+        if (packedDateToLabel) {
+            packedDateToLabel.textContent = t("packedDateToLabel");
+        }
+
+        if (applyDateFilterButton) {
+            applyDateFilterButton.textContent = t("applyFilterButton");
+        }
+
+        if (resetDateFilterButton) {
+            resetDateFilterButton.textContent = t("resetButton");
+        }
+
+        const selectAllLabel = document.getElementById("selectAllLabel");
+        if (selectAllLabel) {
+            selectAllLabel.textContent = t("selectAllLabel");
+        }
+
+        if (selectedCount) {
+            selectedCount.textContent = t("selectedCountLabel", { count: selectedContainerIds.size });
+        }
+
+        const defaultOption = containerSelect?.querySelector('option[value="default"], option[value=""]');
+        if (defaultOption) {
+            defaultOption.textContent = t("selectContainerOption");
+        }
+    }
+
+    if (backToContainersButton) {
+        backToContainersButton.addEventListener("click", () => {
+            window.location.href = "/containers/container.html";
+        });
+    }
+
+    applyStaticTranslations();
+
     function updateDownloadButtonState() {
         if (isMultiMode) {
-            downloadButton.textContent = "Download Selected Containers";
+            downloadButton.textContent = t("downloadButtonMulti");
             downloadButton.disabled = selectedContainerIds.size === 0;
             return;
         }
 
-        downloadButton.textContent = "Download Selected Container";
+        downloadButton.textContent = t("downloadButtonSingle");
         downloadButton.disabled = !selectedContainerId;
     }
 
@@ -78,7 +225,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     function updateSelectedCount() {
-        selectedCount.textContent = `Selected: ${selectedContainerIds.size}`;
+        selectedCount.textContent = t("selectedCountLabel", { count: selectedContainerIds.size });
     }
 
     function parsePackedDate(value) {
@@ -104,7 +251,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         if (fromDate && toDate && fromDate > toDate) {
             if (showValidationError) {
-                alert("Packed date 'from' cannot be later than packed date 'to'.");
+                alert(t("packedDateInvalid"));
             }
             return false;
         }
@@ -155,7 +302,7 @@ document.addEventListener("DOMContentLoaded", function () {
         if (!filteredContainers.length) {
             const empty = document.createElement("div");
             empty.className = "multi-empty";
-            empty.textContent = "No packed containers found.";
+            empty.textContent = t("noPackedContainersFound");
             multiContainerList.appendChild(empty);
             updateSelectedCount();
             updateSelectAllState();
@@ -186,7 +333,7 @@ document.addEventListener("DOMContentLoaded", function () {
             });
 
             const text = document.createElement("span");
-            const containerName = container.container_name || `Container ${container.container_id}`;
+            const containerName = container.container_name || `${t("containerWord")} ${container.container_id}`;
             text.textContent = `${containerName} | ${buildContainerMeta(container)}`;
 
             item.appendChild(checkbox);
@@ -233,7 +380,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
             allContainers = data.containers.containers || [];
 
-            containerSelect.innerHTML = '<option value="" disabled selected>Select a container</option>';
+            containerSelect.innerHTML = `<option value="" disabled selected>${t("selectContainerOption")}</option>`;
             allContainers.forEach((container) => {
                 containerSelect.appendChild(createContainerOption(container));
             });
@@ -330,7 +477,7 @@ document.addEventListener("DOMContentLoaded", function () {
             window.URL.revokeObjectURL(url);
         } catch (error) {
             console.error("Error downloading container kit:", error);
-            alert(`Failed to download container: ${error.message}`);
+            alert(t("failedDownloadContainer", { message: error.message }));
         }
     }
 
@@ -374,7 +521,7 @@ document.addEventListener("DOMContentLoaded", function () {
             window.URL.revokeObjectURL(url);
         } catch (error) {
             console.error("Error downloading bulk container list:", error);
-            alert(`Failed to download containers list: ${error.message}`);
+            alert(t("failedDownloadContainers", { message: error.message }));
         }
     }
 
@@ -421,7 +568,7 @@ document.addEventListener("DOMContentLoaded", function () {
     downloadButton.addEventListener("click", async function () {
         if (isMultiMode) {
             if (!selectedContainerIds.size) {
-                alert("Select at least one container for bulk download.");
+                alert(t("selectAtLeastOneContainer"));
                 return;
             }
             await downloadContainersBulk([...selectedContainerIds]);
@@ -429,7 +576,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
         if (!selectedContainerId) {
-            alert("Select a container first.");
+            alert(t("selectContainerFirst"));
             return;
         }
 
@@ -445,7 +592,7 @@ document.addEventListener("DOMContentLoaded", function () {
 async function refreshAccessToken() {
     const refreshToken = localStorage.getItem("refresh_token");
     if (!refreshToken) {
-        alert("No refresh token available");
+        alert(t("noRefreshToken"));
         return;
     }
 
@@ -462,10 +609,10 @@ async function refreshAccessToken() {
         if (data.access_token) {
             localStorage.setItem("access_token", data.access_token);
         } else {
-            alert("Failed to refresh the access token");
+            alert(t("failedRefreshToken"));
         }
     } catch (error) {
         console.error("Error refreshing access token:", error);
-        alert("Error refreshing access token");
+        alert(t("errorRefreshToken"));
     }
 }

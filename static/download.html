@@ -8,25 +8,29 @@
 </head>
 <body>
 
-<h1>Container Selection</h1>
+<div class="top-controls">
+    <button id="backToContainersButton" class="top-btn" type="button" data-i18n="backToContainersButton">Back to Containers</button>
+</div>
+
+<h1 data-i18n="pageTitle">Container Selection</h1>
 
 <div class="mode-switch">
     <label>
         <input type="checkbox" id="multiModeCheckbox">
-        Select multiple containers
+        <span id="multiModeLabel" data-i18n="multiModeLabel">Select multiple containers</span>
     </label>
 </div>
 
 <div id="singleModeSection">
     <select id="containerSelect">
-        <option value="default" disabled selected>Select a container</option>
+        <option value="default" disabled selected data-i18n="selectContainerOption">Select a container</option>
     </select>
 
     <table id="containerTable" style="display:none">
         <thead>
             <tr>
-                <th>Article</th>
-                <th>Total</th>
+                <th data-i18n="tableArticle">Article</th>
+                <th data-i18n="tableTotal">Total</th>
             </tr>
         </thead>
         <tbody id="tableBody"></tbody>
@@ -35,24 +39,24 @@
 
 <div id="multiModeSection" style="display:none">
     <div class="date-filter">
-        <label for="packedDateFrom">Packed date from</label>
+        <label for="packedDateFrom" data-i18n="packedDateFromLabel">Packed date from</label>
         <input type="date" id="packedDateFrom">
-        <label for="packedDateTo">to</label>
+        <label for="packedDateTo" data-i18n="packedDateToLabel">to</label>
         <input type="date" id="packedDateTo">
-        <button type="button" id="applyDateFilterButton">Apply filter</button>
-        <button type="button" id="resetDateFilterButton">Reset</button>
+        <button type="button" id="applyDateFilterButton" data-i18n="applyFilterButton">Apply filter</button>
+        <button type="button" id="resetDateFilterButton" data-i18n="resetButton">Reset</button>
     </div>
     <div class="multi-toolbar">
         <label>
             <input type="checkbox" id="selectAllContainers">
-            Select all
+            <span id="selectAllLabel" data-i18n="selectAllLabel">Select all</span>
         </label>
-        <span id="selectedCount">Selected: 0</span>
+        <span id="selectedCount" data-i18n="selectedCountLabel">Selected: 0</span>
     </div>
     <div id="multiContainerList" class="multi-list"></div>
 </div>
 
-<button id="downloadButton" disabled>Download</button>
+<button id="downloadButton" disabled data-i18n="downloadButtonSingle">Download</button>
 
 <script src="scripts/config.js"></script>
 <script src="scripts/download.js"></script>

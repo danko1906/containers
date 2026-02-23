@@ -7,29 +7,47 @@
     <link rel="stylesheet" href="styles/container.css">
 </head>
 <body>
+    <div class="top-controls">
+        <button id="logoutButton" class="top-control top-control-logout" type="button" aria-label="Logout">
+            <svg class="logout-icon" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M14 4h4a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-4"></path>
+                <path d="M10 16l4-4-4-4"></path>
+                <path d="M14 12H4"></path>
+            </svg>
+        </button>
+        <div class="top-control top-control-lang" role="group" aria-label="Language switcher">
+            <span id="langLabel" class="lang-label" data-i18n="languageLabel">Язык</span>
+            <button id="langEnButton" class="lang-option" type="button">EN</button>
+            <button id="langRuButton" class="lang-option" type="button">RU</button>
+        </div>
+    </div>
+
     <div class="container">
-        <h1>Container Management</h1>
+        <h1 data-i18n="pageTitle">Container Management</h1>
         
         <!-- Create Container Section -->
         <div class="create-container">
-            <input type="text" id="containerName" placeholder="Enter container name">
-            <button id="createButton" class="btn">Create Container</button>
+            <input type="text" id="containerName" placeholder="Enter container name" data-i18n-placeholder="containerNamePlaceholder">
+            <button id="createButton" class="btn" data-i18n="createContainerButton">Create Container</button>
         </div>
 
         <!-- Existing Containers Section -->
         <div class="existing-containers">
-            <label for="containersDropdown">Options:</label>
-            <input type="checkbox" id="showPackedCheckbox"> Show packed
+            <label for="containersDropdown" data-i18n="optionsLabel">Options:</label>
+            <label class="checkbox-label">
+                <input type="checkbox" id="showPackedCheckbox">
+                <span id="showPackedText" data-i18n="showPackedCheckboxLabel">Show packed</span>
+            </label>
             <select id="containersDropdown">
-                <option value="">-- Select a Container --</option>
+                <option value="" data-i18n="selectContainerOption">-- Select a Container --</option>
             </select>
 
             <!-- Container Actions -->
             <div id="containerActions" class="actions">
-                <button id="goToShipmentButton" class="btn btn-disabled" disabled>Go to Shipment</button>
-                <button id="deleteButton" class="btn btn-delete" style="display: none;">Delete Container</button>
-                <button id="editButton" class="btn btn-disabled" disabled>Edit</button>
-                <button id="downloadButton" style="display: none;">Download</button>
+                <button id="goToShipmentButton" class="btn btn-disabled" disabled data-i18n="goToShipmentButton">Go to Shipment</button>
+                <button id="deleteButton" class="btn btn-delete" style="display: none;" data-i18n="deleteContainerButton">Delete Container</button>
+                <button id="editButton" class="btn btn-disabled" disabled data-i18n="editButton">Edit</button>
+                <button id="downloadButton" style="display: none;" data-i18n="downloadButton">Download</button>
             </div>
         </div>
     </div>
@@ -42,11 +60,10 @@
     <div id="editModal" class="modal">
         <div class="modal-content">
             <span id="closeModal" class="close">&times;</span>
-            <h2>Edit Container Name</h2>
-            <input type="text" id="newContainerName" placeholder="Enter new container name">
+            <h2 data-i18n="editContainerNameTitle">Edit Container Name</h2>
+            <input type="text" id="newContainerName" placeholder="Enter new container name" data-i18n-placeholder="newContainerNamePlaceholder">
             <div class="modal-buttons">
-                <button id="saveButton" class="btn">Save Changes</button>
-                <button id="deleteButton" class="btn btn-delete">Delete Container</button>
+                <button id="saveButton" class="btn" data-i18n="saveChangesButton">Save Changes</button>
             </div>
         </div>
     </div>
@@ -56,19 +73,19 @@
 
     <!-- DM Information Panel -->
     <div id="dmInfoPanel" class="dm-info-panel">
-        <h3>DM Information</h3>
+        <h3 data-i18n="dmInfoTitle">DM Information</h3>
         
         <!-- DM Code Input Moved Here -->
-        <input type="text" id="dmInput" placeholder="Enter DM code" />
+        <input type="text" id="dmInput" placeholder="Enter DM code" data-i18n-placeholder="dmInputPlaceholder" />
         
         <table>
-            <tr><td>Article:</td><td id="dmArticle"></td></tr>
-            <tr><td>Invoice ID:</td><td id="dmInvoiceDate"></td></tr>
-            <tr><td>Number:</td><td id="dmCurrentPageNum"></td></tr>
-            <tr><td>Status:</td><td id="dmStatus"></td></tr>
-            <tr><td>Container Name:</td><td id="dmContainerName"></td></tr>
-            <tr><td>Container Status:</td><td id="dmContainerStatus"></td></tr>
-            <tr><td>Packed Date:</td><td id="dmPackedDate"></td></tr>
+            <tr><td id="dmArticleLabel" data-i18n="dmArticleLabel">Article:</td><td id="dmArticle"></td></tr>
+            <tr><td id="dmInvoiceIdLabel" data-i18n="dmInvoiceIdLabel">Invoice ID:</td><td id="dmInvoiceDate"></td></tr>
+            <tr><td id="dmNumberLabel" data-i18n="dmNumberLabel">Number:</td><td id="dmCurrentPageNum"></td></tr>
+            <tr><td id="dmStatusLabel" data-i18n="dmStatusLabel">Status:</td><td id="dmStatus"></td></tr>
+            <tr><td id="dmContainerNameLabel" data-i18n="dmContainerNameLabel">Container Name:</td><td id="dmContainerName"></td></tr>
+            <tr><td id="dmContainerStatusLabel" data-i18n="dmContainerStatusLabel">Container Status:</td><td id="dmContainerStatus"></td></tr>
+            <tr><td id="dmPackedDateLabel" data-i18n="dmPackedDateLabel">Packed Date:</td><td id="dmPackedDate"></td></tr>
         </table>
     </div>
 

@@ -41,8 +41,6 @@ main.build/
 # =========================
 # Local configs / secrets
 # =========================
-.env
-.env.*
 *.local
 *.log
 

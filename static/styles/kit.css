@@ -10,6 +10,36 @@ body {
     overflow-y: auto; /* Позволяет прокручивать страницу */
 }
 
+.top-controls {
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    right: 10px;
+    max-width: 600px;
+    margin: 0 auto;
+    z-index: 1000;
+    display: flex;
+    justify-content: flex-start;
+}
+
+.top-btn {
+    width: auto;
+    min-width: 150px;
+    margin-top: 0;
+    padding: 10px 14px;
+    font-size: 14px;
+    border-radius: 8px;
+    border: none;
+    background-color: #2196f3;
+    color: #fff;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.top-btn:hover {
+    background-color: #1976d2;
+}
+
 
 #app {
     background-color: white;

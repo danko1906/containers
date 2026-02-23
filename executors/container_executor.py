@@ -3,7 +3,7 @@ from datetime import datetime
 from typing import List, Dict, Any, Optional
 from processors.dict_processor import consolidate_dm_by_article
 from executors.dm_executor import DMExecutor
-from message.engish_message import *
+from message.english_message import *
 
 class ContainerExecutor:
     def __init__(self, db, dm_executor: DMExecutor):

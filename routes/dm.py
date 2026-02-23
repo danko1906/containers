@@ -5,7 +5,7 @@ from processors.query_executor import QueryExecutor
 from app import get_query_executor
 from routes.auth import get_current_user
 from dependencies.container_access import require_container_access
-from message.engish_message import *
+from message.english_message import *
 
 # Создание экземпляра роутера FastAPI
 dm_router = APIRouter()
